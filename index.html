@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8" />
+   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Vite App</title>
+   <link rel="stylesheet" href="/scss/style.scss">
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+   <div class="wrapper">
+      <header class="header">
+         <div class="header__container container">
+            <div class="header__left">
+               <a href="#" class="header__a header__cube">
+                  <img src="/icons/cobe.svg" alt="">
+               </a>
+               <a href="#" class="header__a header__logo">
+                  <img src="/img/logo.gif" alt="">
+               </a>
+               <nav class="header__nav nav">
+                  <div class="nav__item">
+                     <p>Рабочие пространства</p>
+                     <img src="/icons/arrow.svg" alt="">
+                  </div>
+                  <div class="nav__item">
+                     <p>Недавние</p>
+                     <img src="/icons/arrow.svg" alt="">
+                  </div>
+                  <div class="nav__item">
+                     <p>В избранном</p>
+                     <img src="/icons/arrow.svg" alt="">
+                  </div>
+                  <div class="nav__item">
+                     <p>Шаблоны</p>
+                     <img src="/icons/arrow.svg" alt="">
+                  </div>
+               </nav>
+               <button class="header__btn" data-modal>
+                  Создать
+               </button>
+            </div>
+            <div class="header__right">
+
+               <div class="header__search-box">
+                  <span class="material-icons">
+                     search
+                  </span>
+                  <input type="search" class="header__search" placeholder="Поиск" />
+               </div>
+               <div class="header__user-box">
+                  <a href="#" class="bell">
+                     <span class="material-icons">
+                        notifications_none
+                     </span>
+                  </a>
+                  <a href="#" class="help">
+                     <span class="material-icons">
+                        help_outline
+                     </span>
+                  </a>
+                  <a href="#" class="contrast">
+                     <span class="material-icons">
+                        contrast
+                     </span>
+                  </a>
+
+                  <a href="#" class="user">
+                     <img src="./public/icons/avatar_icon.png" alt="">
+                  </a>
+               </div>
+            </div>
+         </div>
+      </header>
+      <main class="main">
+         <section class="top">
+            <div class="top__container container">
+               <div class="top__left">
+                  <div class="top__logo top__item">
+                     Board
+                  </div>
+                  <div class="top__item">
+                     <span class="material-icons">
+                        star_border
+                     </span>
+                  </div>
+                  <div class="top__item">
+                     <span class="material-icons">
+                        people
+                     </span>
+                     Для рабочего пространства
+                  </div>
+                  <div class="top__item top__btn">
+                     <span class="material-icons">
+                        leaderboard
+                     </span>
+                     По доске
+                  </div>
+                  <div class="top__item">
+                     <span class="material-icons">
+                        keyboard_arrow_down
+                     </span>
+                  </div>
+               </div>
+               <div class="top__right">
+                  <div class="top__item">
+                     <img src="/icons/roket.svg" alt="">
+
+                     Улучшения
+
+                  </div>
+                  <div class="top__item">
+                     <span class="material-icons">
+                        flash_on
+                     </span>
+                     Автоматизация
+                  </div>
+                  <div class="top__item"><span class="material-icons">
+                        filter_list
+                     </span>Фильтр</div>
+               </div>
+            </div>
+         </section>
+         <section class="emptys">
+            <div class="emptys__container container">
+               <div class="emptys__item">
+                  <h2>Планы</h2>
+                  <div class="emptys__wrapper" data-por="Планы"></div>
+               </div>
+               <div class="emptys__item" >
+                  <h2>В разработке</h2>
+                  <div class="emptys__wrapper" data-por="В разработке"></div>
+               </div>
+               <div class="emptys__item">
+                  <h2>Готова</h2>
+                  <div class="emptys__wrapper" data-por="Готова"></div>
+               </div>
+            </div>
+         </section>
+      </main>
+   </div>
+
+   <div class="modal">
+      <div class="modal__dialog">
+         <div class="modal__content">
+            <form action="#" name="reg">
+               <div data-close class="modal__close">&times;</div>
+               <div class="modal__title">Как дела?</div>
+               <input required placeholder="Название" name="title" type="text" class="modal__input">
+               <input required placeholder="текст" name="description" type="phone" class="modal__input">
+               <input type="text" name="portal" placeholder="места" class="modal__input" list="place">
+               <select name="selc" id="id_random" class="modal__input"></select>
+               <datalist id="place">
+                  <option value="Планы">
+                     <option value="В разработке">
+                     <option value="Готова">
+               </datalist>
+               <div class="humans-box">
+               </div>
+               <button class="btn btn_dark btn_min">Создать</button>
+            </form>
+         </div>
+      </div>
+   </div>
+   <script type="module" src="/main.js"></script>
+</body>
+
+</html>
