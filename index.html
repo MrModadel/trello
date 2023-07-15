@@ -126,18 +126,6 @@
          </section>
          <section class="emptys">
             <div class="emptys__container container">
-               <div class="emptys__item">
-                  <h2>Планы</h2>
-                  <div class="emptys__wrapper" data-por="Планы"></div>
-               </div>
-               <div class="emptys__item" >
-                  <h2>В разработке</h2>
-                  <div class="emptys__wrapper" data-por="В разработке"></div>
-               </div>
-               <div class="emptys__item">
-                  <h2>Готова</h2>
-                  <div class="emptys__wrapper" data-por="Готова"></div>
-               </div>
             </div>
          </section>
       </main>
@@ -148,22 +136,23 @@
          <div class="modal__content">
             <form action="#" name="reg">
                <div data-close class="modal__close">&times;</div>
-               <div class="modal__title">Как дела?</div>
+               <div class="modal__title">Создать работу</div>
                <input required placeholder="Название" name="title" type="text" class="modal__input">
                <input required placeholder="текст" name="description" type="phone" class="modal__input">
-               <input type="text" name="portal" placeholder="места" class="modal__input" list="place">
-               <select name="selc" id="id_random" class="modal__input"></select>
-               <datalist id="place">
-                  <option value="Планы">
-                     <option value="В разработке">
-                     <option value="Готова">
-               </datalist>
+               <p class="text">Статус</p>
+               <select name="portal" class="modal__input" id="select_portal" style="margin: 0 auto;"></select>
+               <p class="text">РАБотчие</p>
+               <select name="selc" id="id_random" class="modal__input" style="margin: 0 auto;"></select>
                <div class="humans-box">
                </div>
                <button class="btn btn_dark btn_min">Создать</button>
             </form>
          </div>
       </div>
+   </div>
+   <div class="modal-wr">
+      <h2>Название Контейнера</h2>
+      <input type="text">
    </div>
    <script type="module" src="/main.js"></script>
 </body>

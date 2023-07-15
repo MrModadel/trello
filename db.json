@@ -1,3 +1,79 @@
 {
-   "todos": []
+   "todos": [],
+   "users": [
+      {
+         "id": 1,
+         "name": "John Doe",
+         "profession": "Developer",
+         "icon": "icon1.png"
+      },
+      {
+         "id": 2,
+         "name": "Jane Smith",
+         "profession": "Designer",
+         "icon": "icon2.png"
+      },
+      {
+         "id": 3,
+         "name": "Mike Johnson",
+         "profession": "Project Manager",
+         "icon": "icon3.png"
+      },
+      {
+         "id": 4,
+         "name": "Sarah Williams",
+         "profession": "Marketing Specialist",
+         "icon": "icon4.png"
+      },
+      {
+         "id": 5,
+         "name": "David Brown",
+         "profession": "QA Engineer",
+         "icon": "icon5.png"
+      },
+      {
+         "id": 6,
+         "name": "Emily Davis",
+         "profession": "Data Analyst",
+         "icon": "icon6.png"
+      },
+      {
+         "id": 7,
+         "name": "Michael Clark",
+         "profession": "Business Analyst",
+         "icon": "icon7.png"
+      },
+      {
+         "id": 8,
+         "name": "Olivia Taylor",
+         "profession": "Content Writer",
+         "icon": "icon8.png"
+      },
+      {
+         "id": 9,
+         "name": "Daniel Wilson",
+         "profession": "UX/UI Designer",
+         "icon": "icon9.png"
+      },
+      {
+         "id": 10,
+         "name": "Sophia Lee",
+         "profession": "Product Manager",
+         "icon": "icon10.png"
+      }
+   ],
+   "wrappers": [
+      {
+         "name": "планы",
+         "id": 1
+      },
+      {
+         "name": "в разработке",
+         "id": 2
+      },
+      {
+         "name": "готова",
+         "id": 3
+      }
+   ]
 }
