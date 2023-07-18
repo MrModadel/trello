@@ -131,7 +131,7 @@
       </main>
    </div>
 
-   <div class="modal">
+   <div class="modal m-one">
       <div class="modal__dialog">
          <div class="modal__content">
             <form action="#" name="reg">
@@ -146,6 +146,25 @@
                <div class="humans-box">
                </div>
                <button class="btn btn_dark btn_min">Создать</button>
+            </form>
+         </div>
+      </div>
+   </div>
+   <div class="modal m-two">
+      <div class="modal__dialog">
+         <div class="modal__content">
+            <form action="#" name="reg_on">
+               <div data-close-two class="modal__close">&times;</div>
+               <div class="modal__title">Изменить работу</div>
+               <input required placeholder="Название" name="title" type="text" class="modal__input inputs">
+               <input required placeholder="текст" name="description" type="phone" class="modal__input inputs">
+               <p class="text">Статус</p>
+               <select name="portal" class="modal__input" id="select_portal_one" style="margin: 0 auto;"></select>
+               <p class="text">РАБотчие</p>
+               <select name="selc" id="select_portal_two"  class="modal__input" style="margin: 0 auto;"></select>
+               <div class="humans-box-one">
+               </div>
+               <button class="btn btn_dark btn_min save">Сохранить</button>
             </form>
          </div>
       </div>

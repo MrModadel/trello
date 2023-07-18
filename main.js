@@ -1,11 +1,14 @@
 import axios from "axios";
 import { reload_sel, reload_select_portal } from "./modules/ui";
 let select_portal = document.querySelector('#select_portal')
+let select_portal_one = document.getElementById('select_portal_one')
 let baseUrl = 'http://localhost:5050';
-let modal = document.querySelector('.modal')
+let modal = document.querySelector('.m-one')
 let openBtns = document.querySelectorAll('[data-modal]')
 let closeBtns = document.querySelectorAll('[data-close]')
 let md = document.querySelector('.modal-wr')
+let inputs = document.querySelectorAll('.inputs')
+let save = document.querySelector('.save')
 openBtns.forEach((btn) => {
    btn.onclick = () => {
       empties = document.querySelectorAll('.emptys__wrapper');
@@ -40,10 +43,14 @@ await axios.get(baseUrl + '/users')
    })
 
 let teams_clone = Object.assign([], teams);
+let teams_clone_one = Object.assign([], teams);
 let active_teams = []
+let active_teams_one = []
 const select = document.getElementById('id_random');
 const box = document.getElementsByClassName('humans-box');
+const box_one = document.querySelector('.humans-box-one')
 const form = document.forms.reg;
+let select_one = document.getElementById('select_portal_two')
 reload_sel(teams_clone, select)
 let empties = document.querySelectorAll('.emptys__wrapper');
 reload_select_portal(empties, select_portal)
@@ -61,7 +68,8 @@ async function reload(arr) {
       let b = document.createElement('b')
       let p = document.createElement('p')
       let div2 = document.createElement('div');
-
+      let edit = document.createElement('span');
+      let tr = document.createElement('span');
       div2.classList.add('populs');
       for (let id of todo.team) {
          for (let el of teams) {
@@ -73,11 +81,11 @@ async function reload(arr) {
       div.setAttribute('id', todo.id)
       div.setAttribute('class', 'item')
       div.setAttribute('draggable', true)
-
+      edit.classList.add('edit');
+      tr.classList.add('trash');
       b.innerHTML = todo.title
       p.innerHTML = todo.description
-
-      div.append(b, p, div2)
+      div.append(b, p, div2, edit, tr)
       empties.forEach((e, i) => {
          if (e.dataset.por.toLocaleLowerCase() === todo.portal.trim()) {
             empties[i].append(div)
@@ -91,6 +99,60 @@ async function reload(arr) {
       }
       div.ondragend = () => {
          div.className = 'item'
+      }
+      edit.onclick = () => {
+         axios.get(baseUrl + '/todos/' + todo.id)
+            .then(res => {
+               if (res.status === 200 || res.status === 2001) {
+                  res = res.data
+                  empties = document.querySelectorAll('.emptys__wrapper');
+                  reload_select_portal(empties, select_portal_one);
+                  document.querySelector('.m-two').classList.add('show', 'fade');
+                  inputs.forEach(inpt => {
+                     inpt.value = res[`${inpt.name}`] || '';
+                  })
+                  select_portal_one.value = res.portal.trim();
+                  teams_clone_one = Object.assign([], teams);
+                  teams_clone_one = teams_clone_one.filter(el => !res.team.includes(el.id));
+                  active_teams_one = res.team;
+                  reload_sel(teams_clone_one, select_one)
+                  reload_sel_item(active_teams_one, box_one, select_one, false);
+                  let cl = document.querySelector('[ data-close-two]');
+                  cl.onclick = () => {
+                     document.querySelector('.m-two').classList.remove('show', 'fade')
+                  }
+                  let reg_on = document.forms.reg_on;
+                  save.onclick = () => {
+                     const data = {};
+                     const fn = new FormData(reg_on);
+                     let b = true;
+                     fn.forEach((value, key) => {
+                        if (!value.length) {
+                           b = false;
+                        }
+                        data[key] = value;
+                     })
+                     data.team = active_teams_one;
+                     if (b) {
+                        let ex = data
+                        axios.patch(baseUrl + '/todos/' + todo.id, ex)
+                           .then(res => {
+                              if (res.status === 200 || res.status === 201) {
+                                 axios.get(baseUrl + '/todos')
+                                    .then(res => reload(res.data))
+                              } else {
+                                 alert("Error")
+                              }
+                              modal.classList.remove('show', 'fade')
+                           })
+                     }
+                  }
+               }
+            })
+      }
+      tr.onclick = () => {
+         axios.delete(baseUrl + '/todos/' + todo.id)
+         div.remove();
       }
    }
    for (let empty of empties) {
@@ -116,10 +178,12 @@ async function reload(arr) {
          })
       }
    }
+
+
 }
 
 
-function reload_sel_item(arr, box, select) {
+function reload_sel_item(arr, box, select, b = true) {
    box.innerHTML = ' '
    for (let id of arr) {
       for (let item of teams) {
@@ -139,11 +203,22 @@ function reload_sel_item(arr, box, select) {
             //append
             div.append(img, p, close);
             box.appendChild(div);
-            close.onclick = () => {
-               active_teams = active_teams.filter(id => id !== item.id);
-               teams_clone.push(item);
-               reload_sel(teams_clone, select);
-               div.remove();
+            if (b) {
+               close.onclick = () => {
+                  active_teams = active_teams.filter(id => id !== item.id);
+                  teams_clone.push(item);
+                  reload_sel(teams_clone, select);
+                  div.remove();
+               }
+            } else {
+               close.onclick = () => {
+                  active_teams_one = active_teams_one.filter(id => id !== item.id);
+                  teams_clone_one.push(item);
+                  console.log(active_teams_one, teams_clone_one);
+
+                  reload_sel(teams_clone_one, select);
+                  div.remove();
+               }
             }
          }
       }
@@ -190,7 +265,17 @@ select.onchange = () => {
    reload_sel_item(active_teams, box[0], select)
 }
 
-
+select_one.onchange = () => {
+   if (!select_one.value) {
+      return
+   }
+   let item = JSON.parse(select_one.value);
+   select_one.value = ' ';
+   active_teams_one.push(item.id);
+   teams_clone_one = teams_clone_one.filter(el => el.id !== item.id);
+   reload_sel(teams_clone_one, select_one);
+   reload_sel_item(active_teams_one, box_one, select_one, false)
+}
 function reload_boxs(arr, wrapper, modal) {
    wrapper.innerHTML = '';
    for (let item of arr) {

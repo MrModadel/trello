@@ -452,7 +452,7 @@ a {
    animation-name: fade;
    animation-duration: 1.5s;
 }
-.humans-box {
+.humans-box , .humans-box-one {
    margin: 10px auto 10px;
    width: 340px;
    height: 40px;
@@ -497,7 +497,7 @@ a {
    }
 }
 
-.humans-box .item {
+.humans-box .item , .humans-box-one .item {
    display: flex;
    justify-content: center;
    align-items: center;
@@ -533,6 +533,7 @@ a {
    border-radius: 16px;
    width: 100%;
    background-color: rgb(185, 196, 172);
+   position: relative;
    b {
       color: #517ebd;
    }
@@ -595,5 +596,35 @@ a {
 }
 .text {
    margin: 20px 0 5px 58px;
-   color:#757575;
+   color: #757575;
+}
+.edit {
+   width: 32px;
+   height: 32px;
+   border-radius: 50%;
+   cursor: pointer;
+
+   background-image: url("/public/img/pencil.png");
+   background-position: 100%;
+   background-repeat: no-repeat;
+   background-size: contain;
+
+   position: absolute;
+   top: 10px;
+   right: 10px;
+}
+.trash{
+   width: 32px;
+   height: 32px;
+   border-radius: 50%;
+   cursor: pointer;
+
+   background-image: url("/public/img/trash.png");
+   background-position: 100%;
+   background-repeat: no-repeat;
+   background-size: contain;
+
+   position: absolute;
+   bottom: 10px;
+   right: 10px;
 }
