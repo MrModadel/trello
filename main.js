@@ -223,7 +223,9 @@ async function reload(arr) {
                console.log("Error deleting todo")
             }
          })
+
    }
+
    for (let empty of empties) {
       empty.ondragover = (event) => {
          event.preventDefault()
@@ -246,6 +248,7 @@ async function reload(arr) {
       }
    }
 }
+
 
 
 function reload_sel_item(arr, box, select, b = true) {
