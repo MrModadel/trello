@@ -314,33 +314,45 @@ a {
    }
 
    &__item {
-      background-color: #000;
+      background: #101204;
+
       min-width: 360px;
       width: 360px;
       min-height: 160px;
       height: fit-content;
       border-radius: 16px;
-      color: #fff;
       display: flex;
       justify-content: flex-start;
-      align-items: center;
+      align-items: flex-start;
       flex-direction: column;
       margin-top: 8px;
+      color: #fff;
       &-white {
          background-color: #fff;
          flex-direction: row;
          justify-content: center;
+         align-items: center;
          border: #000 solid 7px;
-         min-height: 172px;
+         min-height: 164px;
          cursor: pointer;
       }
       h2 {
-         text-align: center;
+         text-align: start;
          padding: 10px 12px;
          border-radius: 8px;
          display: inline-flex;
          justify-content: center;
          align-items: center;
+         font-size: 16px;
+         color: gray;
+      }
+      input {
+         background-color: transparent;
+         border: 0;
+         padding: 10px 12px;
+         outline: 0;
+         color: gray;
+         font-weight: bold;
       }
    }
 
@@ -452,7 +464,8 @@ a {
    animation-name: fade;
    animation-duration: 1.5s;
 }
-.humans-box , .humans-box-one {
+.humans-box,
+.humans-box-one {
    margin: 10px auto 10px;
    width: 340px;
    height: 40px;
@@ -497,7 +510,8 @@ a {
    }
 }
 
-.humans-box .item , .humans-box-one .item {
+.humans-box .item,
+.humans-box-one .item {
    display: flex;
    justify-content: center;
    align-items: center;
@@ -528,12 +542,18 @@ a {
    justify-content: center;
    align-items: flex-start;
    flex-direction: column;
-   padding: 20px;
-   border: 2px solid #cd4646;
-   border-radius: 16px;
+   padding: 16px;
+   background: #22272b;
+   border-radius: 10px;
    width: 100%;
-   background-color: rgb(185, 196, 172);
    position: relative;
+   cursor: grab;
+   transition: 0.3s;
+
+   gap: 8px;
+   &:hover {
+      background: rgb(41, 47, 49);
+   }
    b {
       color: #517ebd;
    }
@@ -599,32 +619,17 @@ a {
    color: #757575;
 }
 .edit {
-   width: 32px;
-   height: 32px;
-   border-radius: 50%;
+   width: 44px;
+   height: 14px;
    cursor: pointer;
+   object-fit: contain;
 
-   background-image: url("/public/img/pencil.png");
-   background-position: 100%;
+   background-image: url("/public/img/pencil.svg");
+   background-position: center;
    background-repeat: no-repeat;
    background-size: contain;
 
    position: absolute;
-   top: 10px;
-   right: 10px;
-}
-.trash{
-   width: 32px;
-   height: 32px;
-   border-radius: 50%;
-   cursor: pointer;
-
-   background-image: url("/public/img/trash.png");
-   background-position: 100%;
-   background-repeat: no-repeat;
-   background-size: contain;
-
-   position: absolute;
-   bottom: 10px;
-   right: 10px;
+   top: 16px;
+   right: 3px;
 }

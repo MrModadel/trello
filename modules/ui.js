@@ -14,7 +14,7 @@ export function reload_sel(arr, select) {
 export function reload_select_portal(items, select) {
    select.innerHTML = ' ';
    for (let item of items) {
-      let op = new Option(item.dataset.por, item.dataset.por.toLocaleLowerCase().trim());
+      let op = new Option(item.previousSibling.innerText, item.dataset.por.toLocaleLowerCase().trim());
       select.append(op);
    };
 }

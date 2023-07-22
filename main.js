@@ -8,7 +8,7 @@ let openBtns = document.querySelectorAll('[data-modal]')
 let closeBtns = document.querySelectorAll('[data-close]')
 let md = document.querySelector('.modal-wr')
 let inputs = document.querySelectorAll('.inputs')
-let save = document.querySelector('.save')
+let save = document.querySelector('.save');
 openBtns.forEach((btn) => {
    btn.onclick = () => {
       empties = document.querySelectorAll('.emptys__wrapper');
@@ -22,6 +22,48 @@ closeBtns.forEach((btn) => {
       modal.classList.remove('show', 'fade')
    }
 })
+
+
+$.fn.extend({
+   editable: function () {
+      $(this).each(function () {
+         var $el = $(this),
+            fontSize = $el.css('font-size'),
+            textTans = $el.css('text-transform'),
+            $edittextbox = $('<input type="text" class="temporary-input"></input>').css('min-width', $el.width()).css('min-height', $el.height()).css('font-size', fontSize).css('text-transform', textTans),
+            submitChanges = function () {
+               if ($edittextbox.val() !== '') {
+                  $el.html($edittextbox.val());
+                  $el.show();
+                  axios.patch(baseUrl + '/wrappers/' + $el[0].dataset.itemIndex, { name: $edittextbox.val() })
+                  $el.trigger('editsubmit', [$el.html()]);
+                  $(document).unbind('click', submitChanges);
+                  $edittextbox.detach();
+               }
+            },
+            tempVal;
+         $edittextbox.click(function (event) {
+            event.stopPropagation();
+         });
+         $el.click(function (e) {
+            tempVal = $el.text().trim();
+            $edittextbox.val(tempVal).insertBefore($el)
+               .bind('keypress', function (e) {
+                  var code = (e.keyCode ? e.keyCode : e.which);
+                  if (code == 13) {
+                     submitChanges();
+                  }
+               }).select();
+            $el.hide();
+            $(document).click(submitChanges);
+            return false;
+         });
+      });
+      return this;
+   }
+});
+
+
 let box_wr = document.querySelector('.emptys__container')
 let temp_id;
 let teams = [];
@@ -69,7 +111,6 @@ async function reload(arr) {
       let p = document.createElement('p')
       let div2 = document.createElement('div');
       let edit = document.createElement('span');
-      let tr = document.createElement('span');
       div2.classList.add('populs');
       for (let id of todo.team) {
          for (let el of teams) {
@@ -82,12 +123,11 @@ async function reload(arr) {
       div.setAttribute('class', 'item')
       div.setAttribute('draggable', true)
       edit.classList.add('edit');
-      tr.classList.add('trash');
       b.innerHTML = todo.title
       p.innerHTML = todo.description
-      div.append(b, p, div2, edit, tr)
+      div.append(b, p, div2, edit)
       empties.forEach((e, i) => {
-         if (e.dataset.por.toLocaleLowerCase() === todo.portal.trim()) {
+         if (e.dataset.por === todo.portal) {
             empties[i].append(div)
          }
       })
@@ -99,6 +139,10 @@ async function reload(arr) {
       }
       div.ondragend = () => {
          div.className = 'item'
+      }
+      let reg_on = document.forms.reg_on;
+      reg_on.onsubmit = (e) => {
+         e.preventDefault();
       }
       edit.onclick = () => {
          axios.get(baseUrl + '/todos/' + todo.id)
@@ -121,7 +165,6 @@ async function reload(arr) {
                   cl.onclick = () => {
                      document.querySelector('.m-two').classList.remove('show', 'fade')
                   }
-                  let reg_on = document.forms.reg_on;
                   save.onclick = () => {
                      const data = {};
                      const fn = new FormData(reg_on);
@@ -136,23 +179,19 @@ async function reload(arr) {
                      if (b) {
                         let ex = data
                         axios.patch(baseUrl + '/todos/' + todo.id, ex)
-                           .then(res => {
+                           .then(async res => {
                               if (res.status === 200 || res.status === 201) {
-                                 axios.get(baseUrl + '/todos')
+                                 await axios.get(baseUrl + '/todos')
                                     .then(res => reload(res.data))
                               } else {
                                  alert("Error")
                               }
-                              modal.classList.remove('show', 'fade')
+                              document.querySelector('.m-two').classList.remove('show', 'fade')
                            })
                      }
                   }
                }
             })
-      }
-      tr.onclick = () => {
-         axios.delete(baseUrl + '/todos/' + todo.id)
-         div.remove();
       }
    }
    for (let empty of empties) {
@@ -287,10 +326,13 @@ function reload_boxs(arr, wrapper, modal) {
       wr.classList.add('emptys__wrapper');
       let text = item.name[0].toLocaleUpperCase() + item.name.slice(1);
       h2.innerText = text;
-      wr.dataset.por = text;
+      wr.dataset.por = item.id;
+      h2.dataset.itemIndex = item.id;
       //append
       div.append(h2, wr);
       wrapper.append(div);
+
+      $(h2).editable();
    };
    let div = document.createElement('div');
    let img = document.createElement('img');
