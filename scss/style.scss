@@ -633,3 +633,20 @@ a {
    top: 16px;
    right: 3px;
 }
+
+.modal-tr {
+   position: absolute;
+   top: -64px;
+   left: 50%;
+   transform: translateX(-50%);
+   border-radius: 16px;
+   padding: 20px 30px;
+   background-color: rgb(237, 135, 135);
+   opacity: .3;
+   transition: .3s ease;
+   h2 {
+      color: red;
+      font-size: 18px;
+      pointer-events: none;
+   }
+}

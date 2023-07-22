@@ -9,6 +9,7 @@ let closeBtns = document.querySelectorAll('[data-close]')
 let md = document.querySelector('.modal-wr')
 let inputs = document.querySelectorAll('.inputs')
 let save = document.querySelector('.save');
+let delete_el = document.querySelector('.modal-tr');
 openBtns.forEach((btn) => {
    btn.onclick = () => {
       empties = document.querySelectorAll('.emptys__wrapper');
@@ -66,6 +67,7 @@ $.fn.extend({
 
 let box_wr = document.querySelector('.emptys__container')
 let temp_id;
+let temp_el;
 let teams = [];
 await axios.get(baseUrl + '/wrappers')
    .then(res => {
@@ -133,12 +135,17 @@ async function reload(arr) {
       })
       temp.push(div)
       div.ondragstart = () => {
-         temp_id = todo.id
-         div.classList.add('hold')
-         setTimeout(() => (div.className = 'invisible'), 0)
+         temp_id = todo.id;
+         temp_el = div;
+         div.classList.add('hold');
+         setTimeout(() => (div.className = 'invisible'), 0);
+         delete_el.style.top = '20px';
       }
       div.ondragend = () => {
-         div.className = 'item'
+         div.className = 'item';
+         delete_el.style.top = '-64px';
+         delete_el.style.border = '0'
+         delete_el.style.opacity = '.3'
       }
       let reg_on = document.forms.reg_on;
       reg_on.onsubmit = (e) => {
@@ -194,6 +201,29 @@ async function reload(arr) {
             })
       }
    }
+   delete_el.ondragover = (event) => {
+      event.preventDefault()
+   }
+   delete_el.ondragenter = (event) => {
+      event.preventDefault();
+      delete_el.style.border = '4px solid red';
+      delete_el.style.opacity = '1'
+   }
+   delete_el.ondragleave = (event) => {
+      event.preventDefault();
+      delete_el.style.border = '0'
+      delete_el.style.opacity = '.3'
+   }
+   delete_el.ondrop = () => {
+      axios.delete(baseUrl + '/todos/' + temp_id)
+         .then(res => {
+            if (res.status === 200 || res.status === 201) {
+               temp_el.remove();
+            }else{
+               console.log("Error deleting todo")
+            }
+         })
+   }
    for (let empty of empties) {
       empty.ondragover = (event) => {
          event.preventDefault()
@@ -208,17 +238,13 @@ async function reload(arr) {
       empty.ondrop = function () {
          this.classList.remove('hovered')
          temp.forEach((item, index) => {
-            let t = true;
-            if (+item.id === temp_id && t) {
+            if (+item.id === temp_id) {
                this.append(item);
                axios.patch(baseUrl + '/todos/' + item.id, { portal: this.dataset.por.toLocaleLowerCase() })
-               t = false
             }
          })
       }
    }
-
-
 }
 
 
