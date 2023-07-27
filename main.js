@@ -10,6 +10,7 @@ let md = document.querySelector('.modal-wr')
 let inputs = document.querySelectorAll('.inputs')
 let save = document.querySelector('.save');
 let delete_el = document.querySelector('.modal-tr');
+let arr = [];
 openBtns.forEach((btn) => {
    btn.onclick = () => {
       empties = document.querySelectorAll('.emptys__wrapper');
@@ -96,10 +97,14 @@ const box_one = document.querySelector('.humans-box-one')
 const form = document.forms.reg;
 let select_one = document.getElementById('select_portal_two')
 reload_sel(teams_clone, select)
+let main = document.querySelector('.emptys__container')
 let empties = document.querySelectorAll('.emptys__wrapper');
 reload_select_portal(empties, select_portal)
-axios.get(baseUrl + '/todos')
-   .then(res => reload(res.data))
+await axios.get(baseUrl + '/todos')
+   .then(res => {
+      arr = res.data
+      reload(res.data)
+   })
 
 async function reload(arr) {
    let temp = [];
@@ -130,6 +135,7 @@ async function reload(arr) {
       div.append(b, p, div2, edit)
       empties.forEach((e, i) => {
          if (e.dataset.por === todo.portal) {
+            div.dataset.wrId = empties[i].dataset.por
             empties[i].append(div)
          }
       })
@@ -219,7 +225,7 @@ async function reload(arr) {
          .then(res => {
             if (res.status === 200 || res.status === 201) {
                temp_el.remove();
-            }else{
+            } else {
                console.log("Error deleting todo")
             }
          })
@@ -230,6 +236,7 @@ async function reload(arr) {
       empty.ondragover = (event) => {
          event.preventDefault()
       }
+
       empty.ondragenter = function (event) {
          event.preventDefault()
          this.className += ' hovered'
@@ -241,6 +248,7 @@ async function reload(arr) {
          this.classList.remove('hovered')
          temp.forEach((item, index) => {
             if (+item.id === temp_id) {
+               item.dataset.wrId = this.dataset.por
                this.append(item);
                axios.patch(baseUrl + '/todos/' + item.id, { portal: this.dataset.por.toLocaleLowerCase() })
             }
@@ -415,3 +423,50 @@ function reload_boxs(arr, wrapper, modal) {
       }
    }
 };
+
+let inp = document.querySelector('.header__search')
+
+inp.oninput = (e) => {
+   let val = e.target.value.toLowerCase().trim()
+
+   let filtered = arr.filter(item => item.title.toLowerCase().trim().includes(val))
+   let empes = document.querySelectorAll(`[data-por]`)
+
+   if (val) {
+      let elems = document.querySelectorAll('.finded')
+      elems.forEach(el => el.classList.remove('finded'))
+      let arr = [];
+      for (let finded of filtered) {
+         let elem = document.getElementById(finded.id)
+         arr.push(elem.dataset.wrId)
+         elem.classList.add('finded')
+      }
+
+      for (let ti of empes) {
+         let item = ti.parentNode;
+         if (!arr.includes(ti.dataset.por)) {
+            item.style.display = 'none'
+         } else {
+            item.style.display = 'flex'
+         }
+         document.onclick = (e) => {
+            if (e.target !== inp) {
+               for (let el of empes) {
+                  let elams = el.parentNode;
+                  elams.style.display = 'flex'
+               }
+            }
+         }
+      }
+
+   } else {
+      for (let finded of filtered) {
+         let elem = document.getElementById(finded.id)
+         elem.classList.remove('finded')
+      }
+      for (let el of empes) {
+         let elams = el.parentNode;
+         elams.style.display = 'flex'
+      }
+   }
+}
